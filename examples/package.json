@@ -1,0 +1,6 @@
+{
+    "type": "module",
+    "dependencies": {
+        "@cloud-technology/axios-cache-adapter": "cloud-hybrid/axios-cache-adapter#master"
+    }
+}

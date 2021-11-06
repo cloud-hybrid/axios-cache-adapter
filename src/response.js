@@ -1,6 +1,6 @@
 import limit from './limit'
 import { write } from './cache'
-import { parse } from 'cache-control-esm'
+import { parse } from "./parse";
 
 async function response (config, req, res) {
   const { request = {}, headers = {} } = res
@@ -14,10 +14,12 @@ async function response (config, req, res) {
 
   // Should we try to determine request cache expiration from headers or not
   if (config.readHeaders) {
+    // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
     if (headers['cache-control']) { // Try parsing `cache-control` header from response
-      cacheControl = parse(headers['cache-control'])
 
-      // Force cache exlcusion for `cache-control: no-cache` and `cache-control: no-store`
+      cacheControl = parse(headers['cache-control']);
+
+      // Force cache exclusion for `cache-control: no-cache` and `cache-control: no-store`
       if (cacheControl.noCache || cacheControl.noStore) {
         config.excludeFromCache = true
       }
