@@ -1,4 +1,4 @@
-const {setup} = require("axios-cache-adapter");
+import { setup } from "./main.mjs";
 
 const api = setup({
     baseURL: "https://httpbin.org",
@@ -10,12 +10,15 @@ const api = setup({
     }
 });
 
-const response = await api.get("/get?foo=bar");
+const response = api.get("/get?foo=bar");
 
-console.log(response.data.args.foo);
-console.log(response.request.fromCache === true);
+response.then(async (response) => {
+    console.log(response.data.args.foo);
+    console.log(response.request.fromCache === true);
 
-const anotherResponse = await api.get("/get?foo=bar");
+    const anotherResponse = await api.get("/get?foo=bar");
 
-console.log(anotherResponse.data.args.foo);
-console.log(anotherResponse.request.fromCache === true);
+    console.log(anotherResponse.data.args.foo);
+    console.log(anotherResponse.request.fromCache === true);
+
+});

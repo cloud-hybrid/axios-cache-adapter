@@ -20,19 +20,16 @@ let mode = "development";
 let target = "web";
 let entry = "./src/index.js";
 
-// List external dependencies
-const dependencies = [
-    "axios"
-];
-
-dependencies.forEach(dep => {
-    externals[dep] = {
-        umd: dep,
-        amd: dep,
-        commonjs: dep,
-        commonjs2: dep
-    }
-})
+//// List external dependencies
+//const dependencies = [
+//    "axios"
+//];
+//
+//dependencies.forEach(dep => {
+//    externals[dep] = {
+//        module: dep
+//    }
+//})
 
 if (process.env.NODE_BUILD_FOR === "node") {
     version.push("node");
@@ -52,18 +49,20 @@ const build = {
     entry,
     output: {
         path: path.resolve(__dirname, "dist"),
-        filename,
-        library: "axiosCacheAdapter",
-        libraryTarget: "umd"
+        libraryTarget: "module"
+    },
+    experiments: {
+        futureDefaults: true,
+        outputModule: true
     },
     mode,
     module: {
         rules: [
             {
                 test: /\.js$/,
-                exclude: /node_modules/,
                 include: [
-                    path.resolve(__dirname, "src")
+                    path.resolve(__dirname, "src"),
+                    path.resolve(__dirname, "node_modules")
                 ],
                 use: [{
                     loader: "babel-loader",
@@ -84,4 +83,6 @@ const build = {
     target
 }
 
-module.exports = process.env.NODE_ENV === "test" ? test: build
+build.experiments.outputModule = true;
+
+module.exports = build;

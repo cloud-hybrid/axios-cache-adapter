@@ -1,6 +1,4 @@
-import {
-    default as axios
-} from "axios";
+import axios from "axios";
 
 import MemoryStore from './memory'
 import {
@@ -24,7 +22,7 @@ const defaults = {
             filter: null,
             methods: ['post', 'patch', 'put', 'delete']
         },
-        adapter: null,
+        adapter: axios.defaults.adapter,
         clearOnStale: true,
         clearOnError: true,
         readOnError: false,
